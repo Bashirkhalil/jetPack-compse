@@ -1,7 +1,5 @@
 package com.example.leanjetpackcompose
 
-import android.annotation.SuppressLint
-import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -9,12 +7,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.Indication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.Interaction
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,15 +19,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.material3.Button
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -41,27 +35,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.layout
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.leanjetpackcompose.ui.theme.LeanJetPackComposeTheme
 import com.example.leanjetpackcompose.ui.theme.buttonRadius
 import com.example.leanjetpackcompose.ui.theme.heightSize
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.CoroutineScope
 
 val mTAG: String = MainActivity::class.java.simpleName
 
@@ -78,10 +66,7 @@ class MainActivity : ComponentActivity() {
 
 }
 
-fun getModifier(): Modifier {
-    return Modifier.padding(12.dp)
-}
-
+fun getModifier(): Modifier = Modifier.padding(12.dp)
 
 @Composable
 fun UserCard() {
@@ -138,11 +123,12 @@ fun Text() {
 
 }
 
+
 //backgroundColor = 0xFFFFFFFF, uiMode = Configuration.UI_MODE_NIGHT_NO
 
-@Preview(
-    showBackground = true, backgroundColor = 0xCFFF95, uiMode = Configuration.UI_MODE_NIGHT_NO
-)
+
+//@Preview(showBackground = true, backgroundColor = 0xCFFF95, uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview
 @Composable
 fun showThePage() {
 //    Surface(
@@ -154,141 +140,175 @@ fun showThePage() {
     buildUI()
 }
 
+
 @Composable
 private fun buildUI() {
     LeanJetPackComposeTheme {
+
+
         //  UserCard()
-
-
-        createCustomButton()
 
         //createCircleImage()
 
-//        Row (
-//            horizontalArrangement = Arrangement.Center,
-//            verticalAlignment = Alignment.CenterVertically,
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .fillMaxHeight()
-//
-//        ){
-//            Text(text = "Hello ")
-//            Text(text = "Hello ")
-//            Text(text = "Hello ")
-//            Text(text = "Hello ")
-//        }
+        createCustomButton()
 
-//        Column (
-//            verticalArrangement = Arrangement.SpaceAround,
-//            horizontalAlignment = Alignment.Start,
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .fillMaxHeight()
-//
-//        ){
-//            Text(text = "Hello ")
-//            Text(text = "Hello ")
-//            Text(text = "Hello ")
-//            Text(text = "Hello ")
-//        }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun createCustomButton() {
-    return Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(15.dp), contentAlignment = Alignment.BottomCenter
-    ) {
 
-        Column {
+    Box(modifier = Modifier
+        .fillMaxWidth()
+     ) {
 
-            buildCard()
+        Column(modifier = Modifier
+            .verticalScroll(rememberScrollState())
+            .padding(15.dp)) {
+
+            // buildCard()
 
             CommonSpacer.spacerHeight10()
 
-            commonBottomText(textValue = "Click Me") {
+            commonEditText(inputType = InputType.Text, hintText = "User Name  ")
 
+            CommonSpacer.spacerHeight10()
+
+            commonEditText(inputType = InputType.Text, hintText = "User Name  ")
+
+            CommonSpacer.spacerHeight10()
+
+            commonEditText(
+                maxLength = 10, inputType = InputType.Phone, hintText = "Phone Number "
+            )
+
+            CommonSpacer.spacerHeight10()
+
+
+            commonEditText(
+                inputType = InputType.EmailAddress, hintText = "Email Address "
+            )
+
+            CommonSpacer.spacerHeight10()
+
+            commonEditText(inputType = InputType.PasswordText, hintText = "Password Text ")
+
+            CommonSpacer.spacerHeight10()
+
+            commonEditText(inputType = InputType.PasswordNumber, hintText = "Password  ")
+
+            CommonSpacer.spacerHeight10()
+
+            var openDialog by remember { mutableStateOf(false) }
+
+            Box(
+                Modifier
+                    .fillMaxWidth()
+            ) {
+                commonBottom(textValue = "Show Dialog") {
+                    openDialog = true
+                }
             }
 
             CommonSpacer.spacerHeight10()
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(heightSize.dp)
-                    .clip(RoundedCornerShape(buttonRadius.dp))
-                    .background(color = Color.Blue)
-                    .clickable {
-                        Log.e("TAG", "Hello click")
-                    }, contentAlignment = Alignment.Center
-            ) {
 
-                Text("Login", color = Color.White, overflow = TextOverflow.Ellipsis)
-            }
+            if(openDialog){
+                CommonDialog(
+                    onDismissClick = {},
+                    onCancel = {
+                        openDialog =  false
+                    } ,
+                    onAccept = {
+                        openDialog =  false
 
-            CommonSpacer.spacerHeight10()
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(heightSize.dp)
-                    .clip(RoundedCornerShape(buttonRadius.dp))
-                    .background(color = Color.Blue)
-                    .clickable {
-                        Log.e("TAG", "Hello click")
-                    }, contentAlignment = Alignment.Center
-            ) {
-
-                Text(
-                    "Login",
-                    textAlign = TextAlign.Center,
-                    color = Color.White,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.fillMaxWidth()
+                    }
                 )
             }
 
 
+
+            /*
+                  var showBottomSheet by remember { mutableStateOf(false) }
+            if (showBottomSheet){
+                commonBottomSheet(
+                    onDismiss = {
+                        showBottomSheet = false
+                    }
+                )
+            }
+    
+             */
+
+            /*
+    
+            commonBottomText(textValue = "Click Me") {
+                showBottomSheet = true
+            }
+    
+    
+            CommonSpacer.spacerHeight10()
+    
+    
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .height(heightSize.dp)
+                .clip(RoundedCornerShape(buttonRadius.dp))
+                .background(color = Color.Blue)
+                .clickable {
+                    Log.e("TAG", "Hello click")
+                }, contentAlignment = Alignment.Center
+            ) {
+    
+                Text("Login", color = Color.White, overflow = TextOverflow.Ellipsis)
+            }
+    
+    
+    
             CommonSpacer.spacerHeight10()
 
+    
+    
+            CommonSpacer.spacerHeight10()
+    
             Row(modifier = Modifier.fillMaxWidth()) {
-
-
+    
+    
                 Box(
                     Modifier
                         .fillMaxWidth()
                         .weight(1f)
                 ) {
-                    commonBottom(textValue = "Login") {
-
+                    commonBottom(textValue = "Login2") {
+                        showBottomSheet = !showBottomSheet ;
+    
                     }
                 }
-
+    
                 CommonSpacer.spacerWidth5()
-
+    
                 Box(
                     Modifier
                         .fillMaxWidth()
                         .weight(1f)
                 ) {
                     commonBottom(textValue = "Login") {
-
+    
                     }
                 }
-
-
+    
+    
             }
-
+    
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp)
                     .background(Color.Transparent)
             ) {
-
-
+    
+    
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -298,97 +318,85 @@ fun createCustomButton() {
                         .background(color = Color.Blue)
                         .clickable {
                             Log.e("TAG", "Hello click")
+    
+    
                         }, contentAlignment = Alignment.Center
                 ) {
-
+    
                     Text("Login", color = Color.White, overflow = TextOverflow.Ellipsis)
                 }
-
+    
                 CommonSpacer.spacerWidth10(10)
-
-                Box(
-                    modifier = Modifier
-                        .height(heightSize.dp)
-                        .weight(1f)
-                        .clip(RoundedCornerShape(buttonRadius.dp))
-                        .background(color = Color.Blue)
-                        .clickable { }, contentAlignment = Alignment.Center
-
-                ) {
-                    Text("Login", color = Color.White, overflow = TextOverflow.Ellipsis)
-
+    
+                Box(modifier = Modifier
+                    .height(heightSize.dp)
+                    .weight(1f)
+                    .clip(RoundedCornerShape(buttonRadius.dp))
+                    .background(color = Color.Blue)
+                    .clickable {
+    
+    
+    //                            val scaffoldState = rememberBottomSheetScaffoldState()
+    //                            val scope = rememberCoroutineScope()
+    //                            scope.launch {
+    //                                scaffoldState.bottomSheetState.expand()
+    //                            }
+    
+    
+                    }, contentAlignment = Alignment.Center) {
+                    Text("Login Test", color = Color.White, overflow = TextOverflow.Ellipsis)
                 }
-
-
+    
+    
+    
             }
+    
+             */
+
 
         }
-
-
     }
+
 }
 
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun commonImage(
-    imageResourceId: Int,
-    imageSize: Int = 120,
-    imageWidth: Int = 50,
-    imageHeight: Int = 50,
-    onImageClick: () -> Unit
-) {
+fun showList(scope: CoroutineScope, m: BottomSheetScaffoldState) {
 
-    Image(
-        modifier = Modifier
-            .size(imageSize.dp)
-            .clip(CircleShape),
-        painter = painterResource(id = imageResourceId),
-        contentDescription = null,
-        contentScale = ContentScale.FillBounds,
-    )
+
+//       ModalBottomSheet(
+//        windowInsets = WindowInsets.displayCutout,
+//        dragHandle =  { BottomSheetDefaults.DragHandle()},
+//        sheetState = mModelState ,
+//        onDismissRequest = {
+//            onDismiss()
+//        },
+//        ) {
+//        Column(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(vertical = 10.dp, horizontal = 20.dp)
+//        ) {
+//            Text(
+//                text = "flag",
+//                modifier = Modifier.padding(end = 20.dp)
+//            )
+//            Text(text = "country")
+//
+//            CommonSpacer.spacerHeight10()
+//
+//            commonBottomText(
+//                enableLeadingIcon = false ,
+//                textValue = "Close") {
+//                onDismiss()
+//            }
+//        }
+//    }
+
 
 }
 
-
-@Composable
-fun commonText(
-    disableRipple: Boolean = false,
-    textValue: String,
-    textLineSize: Int = Int.MAX_VALUE,
-    textColor: Color = Color.DarkGray,
-    fontSize: Int = 18,
-    onTextClick: (() -> Unit)? = null
-) {
-
-    Text(
-        modifier = Modifier
-            .clickable(
-            interactionSource = MutableInteractionSource(),
-            indication = if (disableRipple) null else rememberRipple(bounded = true)
-        ) {
-
-            if (onTextClick != null) {
-                onTextClick()
-            }
-        },
-        text = textValue,
-        color = textColor,
-        fontSize = fontSize.sp,
-        fontWeight = FontWeight.Medium,
-        overflow = TextOverflow.Ellipsis,
-        maxLines = textLineSize
-    )
-
-}
-
-
-class NoRippleInteractionSource : MutableInteractionSource {
-
-    override val interactions: Flow<Interaction> = emptyFlow()
-
-    override suspend fun emit(interaction: Interaction) {}
-
-    override fun tryEmit(interaction: Interaction) = true
-}
 
 @Composable
 fun buildCard() {
@@ -398,8 +406,7 @@ fun buildCard() {
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize()
-            .padding(vertical = 10.dp)
-        ,
+            .padding(vertical = 10.dp),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White,
@@ -413,10 +420,7 @@ fun buildCard() {
         Column {
 
 
-            Row(
-                modifier = Modifier
-
-            ) {
+            Row(modifier = Modifier) {
 
                 Box(modifier = Modifier.padding(10.dp)) {
                     commonImage(
@@ -430,13 +434,12 @@ fun buildCard() {
 
                 }
 
-
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(end = 4.dp)
-
                 ) {
+
 
                     CommonSpacer.spacerHeight10()
 
@@ -474,18 +477,6 @@ fun buildCard() {
 
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun commonBottomSheet(onDismiss: () -> Unit) {
-
-    var showSheet by remember { mutableStateOf(false) }
-
-    ModalBottomSheet(onDismissRequest = { onDismiss() }) {
-
-    }
-
-}
-
 
 @Composable
 fun createCircleImage() {
@@ -508,47 +499,8 @@ fun createCircleImage() {
 
 }
 
-@Composable
-fun commonBottom(
-    textValue: String, backgroundColor: Color = Color.Blue, onClick: () -> Unit
-) {
-    Box(
-        modifier = Modifier
-            .height(heightSize.dp)
-            .clip(RoundedCornerShape(buttonRadius.dp))
-            .background(color = backgroundColor)
-            .fillMaxWidth()
-            .clickable {
-                onClick()
-            }, contentAlignment = Alignment.Center
-    ) {
-
-        Text(textValue, color = Color.White, overflow = TextOverflow.Ellipsis)
-
-    }
 
 
-}
-
-
-@Composable
-fun commonBottomText(
-    textValue: String, backgroundColor: Color = Color.Blue, onButtonClick: () -> Unit
-) {
-
-    Button(modifier = Modifier.fillMaxWidth(), onClick = {
-        onButtonClick()
-    }) {
-
-        Icon(modifier = Modifier
-            .height(30.dp), painter = painterResource(id = R.drawable.no_wifi),
-            contentDescription = null ,
-            )
-
-
-        commonText(textValue = textValue , textColor = Color.White)
-    }
-}
 
 
 

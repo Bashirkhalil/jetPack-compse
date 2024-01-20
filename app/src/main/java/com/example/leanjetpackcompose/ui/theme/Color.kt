@@ -19,6 +19,7 @@ val bgColor = Color(0xFFF8F8F8)
 val DarkGrayNormal = Color.DarkGray
 val DarkGrayLight = Color(0xFF001F3F)
 val DarkGrayBlack = Color(0xFF333333)
+val DarkGrayLighter = Color(0xFF6b7786)
 
 
 //val backgroundProduct = Color(0xFFF9F9F9);

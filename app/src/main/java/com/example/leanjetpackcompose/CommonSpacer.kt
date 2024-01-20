@@ -18,6 +18,10 @@ object CommonSpacer {
     fun spacerHeight10(heightValue:Int = 10) =
         Spacer(modifier = Modifier.height(heightValue.dp))
 
+    @Composable
+    fun spacerHeight20(heightValue:Int = 20) =
+        Spacer(modifier = Modifier.height(heightValue.dp))
+
 
     @Composable
     fun spacerWidth5(widthValue:Int = 5) =
@@ -27,5 +31,11 @@ object CommonSpacer {
     @Composable
     fun spacerWidth10(widthValue:Int = 10) =
         Spacer(modifier = Modifier.width(widthValue.dp))
+
+  @Composable
+    fun spacerWidth20(widthValue:Int = 20) =
+        Spacer(modifier = Modifier.width(widthValue.dp))
+
+
 
 }
