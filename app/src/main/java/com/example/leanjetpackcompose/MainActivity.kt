@@ -135,6 +135,7 @@ fun showThePage() {
 }
 
 
+
 @Composable
 private fun buildUI() {
     LeanJetPackComposeTheme {
@@ -161,7 +162,7 @@ fun createCustomButton() {
             .verticalScroll(rememberScrollState())
             .padding(15.dp)) {
 
-            // buildCard()
+             buildCard()
 
             CommonSpacer.spacerHeight10()
 
@@ -194,6 +195,10 @@ fun createCustomButton() {
 
             CommonSpacer.spacerHeight10()
 
+
+            /*
+            alert with one bottom
+             */
             var openDialog by remember { mutableStateOf(false) }
             Box(
                 Modifier
@@ -203,9 +208,7 @@ fun createCustomButton() {
                     openDialog = true
                 }
             }
-
             CommonSpacer.spacerHeight10()
-
             if(openDialog){
                 CommonDialog(
                     message = "Are you sure you want to delete this file ? ",
@@ -221,9 +224,11 @@ fun createCustomButton() {
                 )
             }
 
+            /*
+                      alert with tow bottom
+                       */
 
             var openDialogEx by remember { mutableStateOf(false) }
-
             Box(
                 Modifier
                     .fillMaxWidth()
@@ -232,11 +237,7 @@ fun createCustomButton() {
                     openDialogEx = true
                 }
             }
-
-
             CommonSpacer.spacerHeight10()
-
-
             if(openDialogEx){
                 CommonDialog(
                     message = "File has been deleted successfully ? ",
@@ -253,28 +254,40 @@ fun createCustomButton() {
                 )
             }
 
+
+
+
             /*
-                  var showBottomSheet by remember { mutableStateOf(false) }
-            if (showBottomSheet){
-                commonBottomSheet(
-                    onDismiss = {
-                        showBottomSheet = false
+          tow bottom in row
+           */
+
+            CommonSpacer.spacerHeight10()
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                ) {
+                    commonBottom(textValue = "Yes") {
                     }
-                )
+                }
+                CommonSpacer.spacerWidth5()
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                ) {
+                    commonBottom(textValue = "No") {
+
+                    }
+                }
             }
-    
-             */
+
+
 
             /*
     
-            commonBottomText(textValue = "Click Me") {
-                showBottomSheet = true
-            }
-    
-    
-            CommonSpacer.spacerHeight10()
-    
-    
+
             Box(modifier = Modifier
                 .fillMaxWidth()
                 .height(heightSize.dp)
@@ -294,33 +307,7 @@ fun createCustomButton() {
 
     
     
-            CommonSpacer.spacerHeight10()
-    
-            Row(modifier = Modifier.fillMaxWidth()) {
-    
-    
-                Box(
-                    Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                ) {
-                    commonBottom(textValue = "Login2") {
-                        showBottomSheet = !showBottomSheet ;
-    
-                    }
-                }
-    
-                CommonSpacer.spacerWidth5()
-    
-                Box(
-                    Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                ) {
-                    commonBottom(textValue = "Login") {
-    
-                    }
-                }
+
     
     
             }
@@ -379,6 +366,39 @@ fun createCustomButton() {
 
 
         }
+
+
+        /*
+        show bottom sheet dialog
+         */
+        CommonSpacer.spacerHeight10()
+        var openBottomSheetDialog by remember { mutableStateOf(false) }
+
+        Box(
+            Modifier.fillMaxWidth()
+        ) {
+            commonBottom(textValue = "Show Bottom sheet dialog ") {
+                openBottomSheetDialog = !openBottomSheetDialog
+            }
+        }
+
+
+        if(openBottomSheetDialog){
+
+            commonBottomSheet(
+                enableOneBottomSheet = false,
+                onReject = {
+                    openBottomSheetDialog = !openBottomSheetDialog
+                },
+                onConfirm = {
+                    openBottomSheetDialog = !openBottomSheetDialog
+                }
+
+            )
+
+        }
+
+
     }
 
 }
