@@ -1,7 +1,6 @@
 package com.example.leanjetpackcompose
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -42,13 +40,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.leanjetpackcompose.ui.theme.LeanJetPackComposeTheme
-import com.example.leanjetpackcompose.ui.theme.buttonRadius
-import com.example.leanjetpackcompose.ui.theme.heightSize
 import kotlinx.coroutines.CoroutineScope
 
 val mTAG: String = MainActivity::class.java.simpleName
@@ -201,33 +195,63 @@ fun createCustomButton() {
             CommonSpacer.spacerHeight10()
 
             var openDialog by remember { mutableStateOf(false) }
-
             Box(
                 Modifier
                     .fillMaxWidth()
             ) {
-                commonBottom(textValue = "Show Dialog") {
+                commonBottom(textValue = "Show Dialog with tow Button ") {
                     openDialog = true
                 }
             }
 
             CommonSpacer.spacerHeight10()
 
-
             if(openDialog){
                 CommonDialog(
+                    message = "Are you sure you want to delete this file ? ",
+                    positiveText = "Confirm",
                     onDismissClick = {},
                     onCancel = {
                         openDialog =  false
-                    } ,
+                    },
                     onAccept = {
                         openDialog =  false
 
-                    }
+                    },
                 )
             }
 
 
+            var openDialogEx by remember { mutableStateOf(false) }
+
+            Box(
+                Modifier
+                    .fillMaxWidth()
+            ) {
+                commonBottom(textValue = "Show Dialog with one Button ") {
+                    openDialogEx = true
+                }
+            }
+
+
+            CommonSpacer.spacerHeight10()
+
+
+            if(openDialogEx){
+                CommonDialog(
+                    message = "File has been deleted successfully ? ",
+                    positiveText = "Okay",
+                    enableOneButton = true ,
+                    onDismissClick = {},
+                    onCancel = {
+                        openDialogEx =  false
+                    } ,
+                    onAccept = {
+                        openDialogEx =  false
+
+                    }
+                )
+            }
 
             /*
                   var showBottomSheet by remember { mutableStateOf(false) }
