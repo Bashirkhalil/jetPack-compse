@@ -1,6 +1,7 @@
 package com.example.leanjetpackcompose
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -21,11 +22,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,7 +48,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowCompat
+import com.example.leanjetpackcompose.ui.theme.CommonLoading
 import com.example.leanjetpackcompose.ui.theme.LeanJetPackComposeTheme
+import com.example.news.commonImage
 import kotlinx.coroutines.CoroutineScope
 
 val mTAG: String = MainActivity::class.java.simpleName
@@ -53,6 +62,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+
+            WindowCompat.setDecorFitsSystemWindows(window, false)
+
             buildUI()
         }
     }
@@ -135,11 +147,10 @@ fun showThePage() {
 }
 
 
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun buildUI() {
     LeanJetPackComposeTheme {
-
 
         //  UserCard()
 
@@ -147,22 +158,42 @@ private fun buildUI() {
 
         createCustomButton()
 
+
+
+
     }
 }
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun createCustomButton() {
 
-    Box(modifier = Modifier
-        .fillMaxWidth()
-     ) {
 
-        Column(modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .padding(15.dp)) {
+    var openBottomSheetAbout by remember { mutableStateOf(false) }
+    var openBottomSheetDialogTow by remember { mutableStateOf(false) }
+    var openBottomSheetDialog by remember { mutableStateOf(false) }
+    var openDialog by remember { mutableStateOf(false) }
+    var openDialogNormalOne by remember { mutableStateOf(false) }
+    var openDialogNormal by remember { mutableStateOf(false) }
+    var openDialogEx by remember { mutableStateOf(false) }
 
-             buildCard()
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+
+
+
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .padding(15.dp)
+        ) {
+
+            buildCard()
 
             CommonSpacer.spacerHeight10()
 
@@ -194,72 +225,93 @@ fun createCustomButton() {
             commonEditText(inputType = InputType.PasswordNumber, hintText = "Password  ")
 
             CommonSpacer.spacerHeight10()
+            CommonSpacer.spacerHeight10()
+
+
+
+            /// show bottom sheet dialog
+            Box(
+                Modifier.fillMaxWidth()
+            ) {
+                commonBottom(textValue = "Show Bottom sheet About ") {
+                    openBottomSheetAbout = !openBottomSheetAbout
+                }
+            }
+
+            CommonSpacer.spacerHeight10()
+
+
+            /// show bottom sheet dialog
+            Box(
+                Modifier.fillMaxWidth()
+            ) {
+                commonBottom(textValue = "Show Bottom sheet with tow bottom  ") {
+                    openBottomSheetDialogTow = !openBottomSheetDialogTow
+                }
+            }
+
+
+            CommonSpacer.spacerHeight10()
+
+            Box(
+                Modifier.fillMaxWidth()
+            ) {
+                commonBottom(textValue = "Show Bottom sheet dialog ") {
+                    openBottomSheetDialog = !openBottomSheetDialog
+                }
+            }
 
 
             /*
             alert with one bottom
              */
-            var openDialog by remember { mutableStateOf(false) }
-            Box(
-                Modifier
-                    .fillMaxWidth()
+            CommonSpacer.spacerHeight10()
+
+            Box(Modifier
+                .fillMaxWidth()
             ) {
-                commonBottom(textValue = "Show Dialog with tow Button ") {
-                    openDialog = true
+                commonBottom(textValue = "Show Dialog with custom tow Button ") {
+                    openDialog = !openDialog
                 }
             }
             CommonSpacer.spacerHeight10()
-            if(openDialog){
-                CommonDialog(
-                    message = "Are you sure you want to delete this file ? ",
-                    positiveText = "Confirm",
-                    onDismissClick = {},
-                    onCancel = {
-                        openDialog =  false
-                    },
-                    onAccept = {
-                        openDialog =  false
 
-                    },
-                )
-            }
+
+
 
             /*
                       alert with tow bottom
                        */
 
-            var openDialogEx by remember { mutableStateOf(false) }
             Box(
                 Modifier
                     .fillMaxWidth()
             ) {
-                commonBottom(textValue = "Show Dialog with one Button ") {
+                commonBottom(textValue = "Show Dialog with custom one Button ") {
                     openDialogEx = true
                 }
             }
             CommonSpacer.spacerHeight10()
-            if(openDialogEx){
-                CommonDialog(
-                    message = "File has been deleted successfully ? ",
-                    positiveText = "Okay",
-                    enableOneButton = true ,
-                    onDismissClick = {},
-                    onCancel = {
-                        openDialogEx =  false
-                    } ,
-                    onAccept = {
-                        openDialogEx =  false
 
-                    }
-                )
+
+
+            Box(Modifier.fillMaxWidth()) {
+                commonBottom(textValue = "Show Dialog with normal one Button ") {
+                    openDialogNormal = !openDialogNormal
+                }
             }
+            CommonSpacer.spacerHeight10()
 
 
 
+            Box(Modifier.fillMaxWidth()) {
+                commonBottom(textValue = "Show Dialog with normal tow Button ") {
+                    openDialogNormalOne = !openDialogNormalOne
+                }
+            }
+            CommonSpacer.spacerHeight10()
 
-            /*
-          tow bottom in row
-           */
+
 
             CommonSpacer.spacerHeight10()
             Row(modifier = Modifier.fillMaxWidth()) {
@@ -282,7 +334,6 @@ fun createCustomButton() {
                     }
                 }
             }
-
 
 
             /*
@@ -368,39 +419,170 @@ fun createCustomButton() {
         }
 
 
+
+
+
+
+
         /*
-        show bottom sheet dialog
+
          */
-        CommonSpacer.spacerHeight10()
-        var openBottomSheetDialog by remember { mutableStateOf(false) }
-
-        Box(
-            Modifier.fillMaxWidth()
-        ) {
-            commonBottom(textValue = "Show Bottom sheet dialog ") {
-                openBottomSheetDialog = !openBottomSheetDialog
-            }
-        }
-
-
-        if(openBottomSheetDialog){
-
-            commonBottomSheet(
-                enableOneBottomSheet = false,
-                onReject = {
-                    openBottomSheetDialog = !openBottomSheetDialog
-                },
-                onConfirm = {
-                    openBottomSheetDialog = !openBottomSheetDialog
-                }
-
-            )
-
-        }
-
-
     }
 
+
+
+    // show bottom sheet 1
+    if (openBottomSheetDialogTow) {
+        commonBottomSheet(
+            sheetSwipeEnabled = false,
+            message = "Are you sure you want to delete this file ?",
+            hideToggle = true,
+            hideTitle = true,
+            enableOneBottomSheet = false,
+            onConfirm = {
+                openBottomSheetDialogTow = !openBottomSheetDialogTow
+            },
+            onReject = {
+                openBottomSheetDialogTow = !openBottomSheetDialogTow
+            },
+            onBottomSheetOpen = {
+            },
+            onBottomSheetClose = {
+                Log.e("TestRes", "The Value on Close : $it")
+                 openBottomSheetDialogTow = !openBottomSheetDialogTow
+            },
+        )
+    }
+
+
+    // show bottom sheet about  2
+    if (openBottomSheetAbout) {
+        commonBottomSheet(
+            title = "About us ",
+            sheetSwipeEnabled = true,
+            message = "OMA Emirates is a technology-centric company, committed to providing solutions in the area of Card Personalization, Issuance, Acquiring Systems and Digital Banking. OMA Emirates provides services designed to deliver a seamless customer experience. Established as the number one service provider for the payment industry in the MENA region, OMA Emirates also provides value-added services like E-Vouchers, E-Wallet Solution, Loyalty Application, and various other services.\n" +
+                    "\n" +
+                    "In the UAE, it has operated since 1991 with a 100% partnership (Al Owais Group of Companies). Today OMA Emirates functions with 300+ staff, generating an annual revenue of more than \$2.5 billion.",
+            hideToggle = true,
+            enableOneBottomSheet = true,
+            onConfirm = {
+                openBottomSheetAbout = !openBottomSheetAbout
+            },
+            onReject = {
+                openBottomSheetAbout = !openBottomSheetAbout
+            },
+            onBottomSheetOpen = {
+            },
+            onBottomSheetClose = {
+                Log.e("TestRes", "The Value on Close : $it")
+                openBottomSheetAbout = !openBottomSheetAbout
+            },
+        )
+    }
+
+
+    // show bottom sheet 2
+    if (openBottomSheetDialog) {
+        commonBottomSheet(
+            message = "File has been deleted successfully  ",
+            enableOneBottomSheet = true,
+            onConfirm = {
+                openBottomSheetDialog = !openBottomSheetDialog
+            },
+            onReject = {
+                openBottomSheetDialog = !openBottomSheetDialog
+            },
+            onBottomSheetOpen = {
+            },
+            onBottomSheetClose = {
+                Log.e("TestRes s", "The Value on Close : $it")
+                openBottomSheetDialog = !openBottomSheetDialog
+            },
+        )
+    }
+
+
+    // show dialog  1
+    if (openDialog) {
+        CommonDialog(
+            dialogType = DialogType.Custom,
+            message = "Are you sure you want to delete this file ? ",
+            positiveText = "Confirm",
+            onDismissClick = {},
+            onCancel = {
+                openDialog = !openDialog
+            },
+            onAccept = {
+                openDialog = !openDialog
+
+            },
+        )
+    }
+
+    // show dialog  2
+    if (openDialogNormalOne) {
+        CommonDialog(
+            title = "Message",
+            message = "File has been deleted successfully  ",
+            positiveText = "Okay",
+            onDismissClick = {},
+            onCancel = {
+                openDialogNormalOne = !openDialogNormalOne
+            },
+            onAccept = {
+                openDialogNormalOne = !openDialogNormalOne
+            }
+        )
+    }
+
+    // show dialog  3
+    if (openDialogNormal) {
+        CommonDialog(
+            title = "Message",
+            message = "File has been deleted successfully  ",
+            positiveText = "Okay",
+            onDismissClick = {},
+            enableOneButton = true,
+            onCancel = {
+                openDialogNormal = !openDialogNormal
+            },
+            onAccept = {
+                openDialogNormal = !openDialogNormal
+
+            }
+        )
+    }
+
+    // show dialog  4
+    if (openDialogEx) {
+        CommonDialog(
+            dialogType = DialogType.Custom,
+            title = "Message",
+            message = "File has been deleted successfully  ",
+            positiveText = "Okay",
+            enableOneButton = true,
+            onDismissClick = {},
+            onCancel = {
+                openDialogEx = false
+            },
+            onAccept = {
+                openDialogEx = false
+
+            }
+        )
+    }
+}
+
+
+@Composable
+fun body() {
+     Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Red)
+    ) {
+
+    }
 }
 
 

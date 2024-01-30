@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -56,8 +57,78 @@ fun commonEditText(
     var isPasswordVisible by remember { mutableStateOf(false) }
     var mText by remember { mutableStateOf("") }
 
+
+    OutlinedTextField(
+        singleLine = singleLine,
+        value = mText,
+        readOnly = readOnly,
+        visualTransformation = getPasswordVisualTransform(inputType, isPasswordVisible),
+        keyboardOptions = getKeyboardType(inputType),
+        leadingIcon = if (enableLeadingIcon) GetLeadingIcon(inputType = inputType) else null,
+        colors = TextFieldDefaults.textFieldColors(
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            containerColor = Color.White
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(mRoundCircle)
+            .border(
+                BorderStroke(
+                    width = 1.dp,
+                    color = Color(0xFF6b7786),
+                ), shape = mRoundCircle
+            ),
+        onValueChange = {
+
+            if (maxLength != null && mText.length == maxLength) {
+               return@OutlinedTextField
+            }
+
+            mText = it
+
+        },
+        placeholder = {
+            if (mHintTextType.name == HintTextType.PLACEHOLDER.name) {
+                Text(text = hintText)
+            }
+        }, // inside
+        label = getLabelHintValue(mHintTextType, hintText), // outside
+        trailingIcon = {
+
+            // execute this only if the icon is password
+            if (inputType.name == InputType.PasswordNumber.name || inputType.name == InputType.PasswordText.name) {
+
+
+                ifTheIconIsPassword(isPasswordVisible = isPasswordVisible,
+
+                    onDelayOccur = {
+                        isPasswordVisible = false
+                    },
+
+                    onClickOccur = {
+                        isPasswordVisible = !isPasswordVisible
+                    })
+
+
+            }
+
+
+            // execute this only if the icon is password
+            if (inputType.name != InputType.PasswordNumber.name && inputType.name != InputType.PasswordText.name) {
+                ClearIcon(mText) {
+                    mText = ""
+                }
+            }
+
+
+        }
+    )
+
+/*
     // TextField
-    TextField(singleLine = singleLine,
+    TextField(
+        singleLine = singleLine,
         value = mText,
         readOnly = readOnly,
         label = getLabelHintValue(mHintTextType, hintText),
@@ -121,6 +192,9 @@ fun commonEditText(
 
 
         })
+
+ */
+
 }
 
 

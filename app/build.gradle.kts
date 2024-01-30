@@ -66,4 +66,9 @@ dependencies {
     implementation ("com.google.android.material:material:1.3.0")
 
 
+    /// 👇🏽👇🏽👇🏽 New code
+    // Coil image loading library
+    // (see https://github.com/coil-kt/coil)
+    implementation ("io.coil-kt:coil-compose:+")
+
 }

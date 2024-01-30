@@ -20,7 +20,8 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun commonText(
-    disableRipple: Boolean = false,
+    disableRipple: Boolean = true,
+    textAlign : TextAlign = TextAlign.Center ,
     textValue: String,
     textLineSize: Int = Int.MAX_VALUE,
     textColor: Color = Color.DarkGray,
@@ -48,7 +49,7 @@ fun commonText(
                 },
             text = textValue,
             color = textColor,
-            textAlign = TextAlign.Center,
+             textAlign = textAlign,
             fontSize = fontSize.sp,
             fontWeight = FontWeight.Medium,
             overflow = TextOverflow.Ellipsis,
