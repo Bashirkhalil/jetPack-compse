@@ -1,4 +1,4 @@
-package com.example.leanjetpackcompose
+package com.example.leanjetpackcompose.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

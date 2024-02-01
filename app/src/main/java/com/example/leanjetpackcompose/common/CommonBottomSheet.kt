@@ -1,6 +1,7 @@
-package com.example.leanjetpackcompose
+package com.example.leanjetpackcompose.common
 
 import android.util.Log
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -102,6 +103,9 @@ fun commonBottomSheet(
 
         BottomSheetScaffold(
             modifier = Modifier
+                .animateContentSize { initialValue, targetValue ->
+
+                }
                 .fillMaxWidth()
                 .background(Color.Blue),
              scaffoldState = bottomSheetScaffoldState,

@@ -1,4 +1,4 @@
-package com.example.leanjetpackcompose.ui.theme
+package com.example.leanjetpackcompose.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,8 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.leanjetpackcompose.CommonSpacer
-import com.example.leanjetpackcompose.commonText
 
 @Composable
 fun CommonLoading(

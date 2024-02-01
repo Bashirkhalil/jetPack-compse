@@ -1,4 +1,4 @@
-package com.example.leanjetpackcompose
+package com.example.leanjetpackcompose.common
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.leanjetpackcompose.R
 
 @Composable
 fun commonBottomText(

@@ -22,16 +22,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.BottomSheetDefaults
-import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,9 +44,16 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
-import com.example.leanjetpackcompose.ui.theme.CommonLoading
+import com.example.leanjetpackcompose.common.CommonDialog
+import com.example.leanjetpackcompose.common.CommonSpacer
+import com.example.leanjetpackcompose.common.DialogType
+import com.example.leanjetpackcompose.common.InputType
+import com.example.leanjetpackcompose.common.commonBottom
+import com.example.leanjetpackcompose.common.commonBottomSheet
+import com.example.leanjetpackcompose.common.commonEditText
 import com.example.leanjetpackcompose.ui.theme.LeanJetPackComposeTheme
-import com.example.news.commonImage
+import com.example.leanjetpackcompose.common.commonImage
+import com.example.leanjetpackcompose.common.commonText
 import kotlinx.coroutines.CoroutineScope
 
 val mTAG: String = MainActivity::class.java.simpleName

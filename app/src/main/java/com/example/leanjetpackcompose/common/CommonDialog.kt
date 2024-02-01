@@ -1,6 +1,5 @@
-package com.example.leanjetpackcompose
+package com.example.leanjetpackcompose.common
 
-import android.icu.text.CaseMap.Title
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.leanjetpackcompose.ui.theme.buttonRadius
 import com.example.leanjetpackcompose.ui.theme.heightSize
-import java.io.DataInput
 
 private const val mRoundCorner = 7
 
@@ -35,7 +33,7 @@ enum class DialogType { Normal , Custom}
 fun CommonDialog(
     dialogType: DialogType = DialogType.Normal,
     message: String = "please write your message here ",
-    title: String = "Please confirm" ,
+    title: String = "Please confirm",
     negativeText: String = "Cancel",
     positiveText: String = "Yes",
     onDismissClick: () -> Unit,
